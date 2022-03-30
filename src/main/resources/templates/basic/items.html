@@ -1,8 +1,9 @@
 <!DOCTYPE HTML>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link th:href="@{/css/bootstrap.min.css}"
+            href="../css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 <div class="container" style="max-width: 600px">
@@ -12,6 +13,7 @@
     <div class="row">
         <div class="col">
             <button class="btn btn-primary float-end"
+                    th:onclick="|location.href='@{/basic/items/add}'|"
                     onclick="location.href='addForm.html'" type="button">상품
                 등록</button>
         </div>
@@ -28,17 +30,14 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td><a href="item.html">1</a></td>
-                <td><a href="item.html">테스트 상품1</a></td>
-                <td>10000</td>
-                <td>10</td>
-            </tr>
-            <tr>
-                <td><a href="item.html">2</a></td>
-                <td><a href="item.html">테스트 상품2</a></td>
-                <td>20000</td>
-                <td>20</td>
+            <!-- thymeleaf에서 url 링크는 @{}안에 적어줘야함           -->
+            <tr th:each="item : ${items}">
+                <td><a href="item.html" th:href="@{/basic/items/{itemId}(itemId=${item.id})}" th:text="${item.id}">회원id</a></td>
+                <td><a href="item.html" th:href="@{|/basic/items/${item.id}|}"
+                       th:text="${item.itemName}">상품명</a></td>
+<!-- 쿼리파라미터 이런 식으로도 가능  <td><a href="item.html" th:href="@{|/basic/items/${item.id}|(query=test)}" th:text="${item.itemName}">상품명</a></td>-->
+                <td th:text="${item.price}">10000</td>
+                <td th:text="${item.quantity}">10</td>
             </tr>
             </tbody>
         </table>
